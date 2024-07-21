@@ -10,29 +10,31 @@
     <div class="container">
         <h1>Welcome to Quick Calculation Practice</h1>
         <p>Select your difficulty level:</p>
-        <div class="button-container">
-            <button onclick="startGame('easy')" class="difficulty-button">Easy</button>
-            <button onclick="startGame('medium')" class="difficulty-button">Medium</button>
-            <button onclick="startGame('hard')" class="difficulty-button">Hard</button>
-            <button onclick="startChallengeMode()" class="difficulty-button">Challenge Mode</button>
-        </div>
+        <button onclick="startGame('easy')">Easy</button>
+        <button onclick="startGame('medium')">Medium</button>
+        <button onclick="startGame('hard')">Hard</button>
+        <button onclick="startChallengeMode()">Challenge Mode</button>
         
-        <!-- 新增计算练习视图，最初隐藏 -->
-        <div id="gameView" class="game-view" style="display:none;">
-            <h2 id="difficultyTitle"></h2>
-            <div id="question" class="question"></div>
-            <input type="number" id="userAnswer" placeholder="Enter your answer" autofocus>
-            <button onclick="submitAnswer()" class="submit-button">Submit</button>
-            <div id="feedback" class="feedback"></div>
-            <div id="score" class="score">Score: 0</div>
-            <div id="timer" class="timer"></div>
+        <div id="challengeExplanation">
+            <h2>Challenge Mode Explanation</h2>
+            <p>
+                In Challenge Mode, the difficulty level increases as you progress. 
+                There is no limit on the number of questions, and you will be tested to see how many questions you can answer correctly. 
+                You will have a time limit of 10 seconds per question. 
+                If you answer three questions incorrectly, the challenge will end. 
+                At the end of the challenge, you will see your total score and the questions you answered incorrectly.
+            </p>
         </div>
 
-        <!-- 新增榜单视图，最初隐藏 -->
-        <div id="leaderboard" class="leaderboard" style="display:none;">
-            <h2>Leaderboard</h2>
-            <ol id="leaderboardList"></ol>
-            <button onclick="restartGame()" class="restart-button">Start Over</button>
+        <!-- 计算练习视图，最初隐藏 -->
+        <div id="gameView" style="display:none;">
+            <h2 id="difficultyTitle"></h2>
+            <div id="question"></div>
+            <input type="number" id="userAnswer" placeholder="Enter your answer" autofocus>
+            <button onclick="submitAnswer()">Submit</button>
+            <div id="feedback"></div>
+            <div id="score">Score: 0</div>
+            <div id="timer"></div>
         </div>
     </div>
     <script src="script.js"></script>
