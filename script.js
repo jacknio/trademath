@@ -131,13 +131,13 @@ function generateHardQuestion() {
     } else {
         operation = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
         if (operation === '+') {
-            [num1, num2, result] = generateAddition(1000, 500);
+            [num1, num2, result] = generateAddition(1000, 500, true);
         } else if (operation === '-') {
-            [num1, num2, result] = generateSubtraction(1000, 500);
+            [num1, num2, result] = generateSubtraction(1000, 500, true);
         } else if (operation === '*') {
-            [num1, num2, result] = generateMultiplication(100, 100);
+            [num1, num2, result] = generateMultiplication(90, 90, true);
         } else {
-            [num1, num2, result] = generateDivision(100, 10);
+            [num1, num2, result] = generateDivision(90, 10, true);
         }
     }
     return [num1, num2, result, operation];
@@ -145,22 +145,7 @@ function generateHardQuestion() {
 
 function generateSpecialMultiplication(difficulty) {
     let num1, num2, result;
-    if (difficulty === 'medium') {
-        const options = [
-            () => {
-                num1 = 125;
-                num2 = 8 * (Math.floor(Math.random() * 11) + 1); // 8的倍数
-                result = num1 * num2;
-            },
-            () => {
-                num1 = 25;
-                num2 = 4 * (Math.floor(Math.random() * 11) + 1); // 4的倍数
-                result = num1 * num2;
-            }
-        ];
-        const selectedOption = options[Math.floor(Math.random() * options.length)];
-        selectedOption();
-    } else if (difficulty === 'hard') {
+    if (difficulty === 'medium' || difficulty === 'hard') {
         const options = [
             () => {
                 num1 = 125;
@@ -184,33 +169,33 @@ function generateSpecialMultiplication(difficulty) {
     return [num1, num2, result];
 }
 
-function generateAddition(maxNum1, maxNum2) {
-    let num1 = Math.floor(Math.random() * maxNum1);
-    let num2 = Math.floor(Math.random() * maxNum2);
+function generateAddition(maxNum1, maxNum2, isHard = false) {
+    let num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 100)) + 100 : Math.floor(Math.random() * maxNum1);
+    let num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 100)) + 100 : Math.floor(Math.random() * maxNum2);
     let result = num1 + num2;
     return [num1, num2, result];
 }
 
-function generateSubtraction(maxNum1, maxNum2) {
-    let num1 = Math.floor(Math.random() * maxNum1);
-    let num2 = Math.floor(Math.random() * maxNum2);
+function generateSubtraction(maxNum1, maxNum2, isHard = false) {
+    let num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 100)) + 100 : Math.floor(Math.random() * maxNum1);
+    let num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 100)) + 100 : Math.floor(Math.random() * maxNum2);
     if (num1 < num2) [num1, num2] = [num2, num1]; // 保证结果为正数
     let result = num1 - num2;
     return [num1, num2, result];
 }
 
-function generateMultiplication(maxNum1, maxNum2) {
-    let num1 = Math.floor(Math.random() * maxNum1);
-    let num2 = Math.floor(Math.random() * maxNum2);
+function generateMultiplication(maxNum1, maxNum2, isHard = false) {
+    let num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 10)) + 10 : Math.floor(Math.random() * maxNum1);
+    let num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 10)) + 10 : Math.floor(Math.random() * maxNum2);
     let result = num1 * num2;
     return [num1, num2, result];
 }
 
-function generateDivision(maxNum1, maxNum2) {
+function generateDivision(maxNum1, maxNum2, isHard = false) {
     let num1, num2, result;
     do {
-        num1 = Math.floor(Math.random() * maxNum1) + 1;
-        num2 = Math.floor(Math.random() * maxNum2) + 1;
+        num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 10)) + 10 : Math.floor(Math.random() * maxNum1) + 1;
+        num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 10)) + 10 : Math.floor(Math.random() * maxNum2) + 1;
         result = num1 / num2;
     } while (!Number.isInteger(result) && (result % 1).toFixed(3) > 0.000); // 确保小数点后三位以内
     return [num1, num2, result.toFixed(3)];
