@@ -43,7 +43,7 @@ function resetGame() {
 }
 
 function generateQuestion(difficulty) {
-    if (questionCount >= 10 || errors >= maxErrors) {
+    if (errors >= maxErrors) {
         endGame();
         return;
     }
@@ -232,6 +232,7 @@ function checkAnswer() {
         setTimeout(() => generateQuestion(isChallengeMode ? 'Challenge Mode' : document.getElementById('difficultyTitle').innerText.split(': ')[1].trim()), 500);
     } else {
         document.getElementById('feedback').innerText = '';
+        handleWrongAnswer();
     }
 
     document.getElementById('score').innerText = 'Score: ' + currentScore;
