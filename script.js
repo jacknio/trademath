@@ -136,7 +136,7 @@ function generateHardQuestion() {
         } else if (operation === '*') {
             [num1, num2, result] = generateMultiplication(90, 90, true);
         } else {
-            [num1, num2, result] = generateDivision(90, 10, true);
+            [num1, num2, result] = generateHardDivision(90, 3, true);
         }
     }
     return [num1, num2, result, operation];
@@ -190,13 +190,13 @@ function generateMultiplication(maxNum1, maxNum2, isHard = false) {
     return [num1, num2, result];
 }
 
-function generateDivision(maxNum1, maxNum2, isHard = false) {
+function generateHardDivision(maxNum1, minNum2, isHard = false) {
     let num1, num2, result;
     do {
-        num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 3)) + 3 : Math.floor(Math.random() * maxNum1) + 1;
-        num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 3)) + 3 : Math.floor(Math.random() * maxNum2) + 1;
+        num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 10)) + 10 : Math.floor(Math.random() * maxNum1) + 1;
+        num2 = isHard ? Math.floor(Math.random() * (maxNum1 - minNum2)) + minNum2 : Math.floor(Math.random() * maxNum2) + 1;
         result = num1 / num2;
-    } while (!Number.isInteger(result) && (result % 1).toFixed(3) > 0.000); // 确保小数点后三位以内
+    } while (!Number.isInteger(result) || (num2 === 10 && num1 % 10 === 0)); // 确保小数点后三位以内且不为十的倍数除以10
     return [num1, num2, result.toFixed(3)];
 }
 
