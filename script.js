@@ -48,8 +48,7 @@ function generateQuestion(difficulty) {
         return;
     }
 
-    let num1, num2, operation, question;
-    let result;
+    let num1, num2, result, operation, question;
     if (difficulty === 'Challenge Mode') {
         if (questionCount < 3) {
             difficulty = 'easy';
@@ -131,9 +130,9 @@ function generateHardQuestion() {
     } else {
         operation = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
         if (operation === '+') {
-            [num1, num2, result] = generateAddition(1000, 500, true);
+            [num1, num2, result] = generateAddition(900, 100, true);
         } else if (operation === '-') {
-            [num1, num2, result] = generateSubtraction(1000, 500, true);
+            [num1, num2, result] = generateSubtraction(900, 100, true);
         } else if (operation === '*') {
             [num1, num2, result] = generateMultiplication(90, 90, true);
         } else {
@@ -185,8 +184,8 @@ function generateSubtraction(maxNum1, maxNum2, isHard = false) {
 }
 
 function generateMultiplication(maxNum1, maxNum2, isHard = false) {
-    let num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 10)) + 10 : Math.floor(Math.random() * maxNum1);
-    let num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 10)) + 10 : Math.floor(Math.random() * maxNum2);
+    let num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 5)) + 5 : Math.floor(Math.random() * maxNum1);
+    let num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 5)) + 5 : Math.floor(Math.random() * maxNum2);
     let result = num1 * num2;
     return [num1, num2, result];
 }
@@ -194,8 +193,8 @@ function generateMultiplication(maxNum1, maxNum2, isHard = false) {
 function generateDivision(maxNum1, maxNum2, isHard = false) {
     let num1, num2, result;
     do {
-        num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 10)) + 10 : Math.floor(Math.random() * maxNum1) + 1;
-        num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 10)) + 10 : Math.floor(Math.random() * maxNum2) + 1;
+        num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 3)) + 3 : Math.floor(Math.random() * maxNum1) + 1;
+        num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 3)) + 3 : Math.floor(Math.random() * maxNum2) + 1;
         result = num1 / num2;
     } while (!Number.isInteger(result) && (result % 1).toFixed(3) > 0.000); // 确保小数点后三位以内
     return [num1, num2, result.toFixed(3)];
