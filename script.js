@@ -110,7 +110,7 @@ function generateMediumQuestion() {
     if (random > 0.95) {
         // 特定的运算技巧题目
         operation = '*';
-        [num1, num2, result] = generateSpecialMultiplication();
+        [num1, num2, result] = generateSpecialMultiplication('medium');
     } else if (random > 0.5) {
         operation = '*';
         [num1, num2, result] = generateMultiplication(50, 20);
@@ -127,7 +127,7 @@ function generateHardQuestion() {
     if (random > 0.95) {
         // 特定的运算技巧题目
         operation = '*';
-        [num1, num2, result] = generateSpecialMultiplication();
+        [num1, num2, result] = generateSpecialMultiplication('hard');
     } else {
         operation = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
         if (operation === '+') {
@@ -143,17 +143,44 @@ function generateHardQuestion() {
     return [num1, num2, result, operation];
 }
 
-function generateSpecialMultiplication() {
+function generateSpecialMultiplication(difficulty) {
     let num1, num2, result;
-    const options = [
-        [25, 4, 100],
-        [125, 8, 1000],
-        [11, 14, 154],
-        [11, 15, 165],
-        [11, 16, 176],
-        [11, 17, 187]
-    ];
-    [num1, num2, result] = options[Math.floor(Math.random() * options.length)];
+    if (difficulty === 'medium') {
+        const options = [
+            () => {
+                num1 = 125;
+                num2 = 8 * (Math.floor(Math.random() * 11) + 1); // 8的倍数
+                result = num1 * num2;
+            },
+            () => {
+                num1 = 25;
+                num2 = 4 * (Math.floor(Math.random() * 11) + 1); // 4的倍数
+                result = num1 * num2;
+            }
+        ];
+        const selectedOption = options[Math.floor(Math.random() * options.length)];
+        selectedOption();
+    } else if (difficulty === 'hard') {
+        const options = [
+            () => {
+                num1 = 125;
+                num2 = 8 * (Math.floor(Math.random() * 11) + 1); // 8的倍数
+                result = num1 * num2;
+            },
+            () => {
+                num1 = 25;
+                num2 = 4 * (Math.floor(Math.random() * 11) + 1); // 4的倍数
+                result = num1 * num2;
+            },
+            () => {
+                num1 = 11;
+                num2 = Math.floor(Math.random() * 91) + 10; // 11 到 1000 的数
+                result = num1 * num2;
+            }
+        ];
+        const selectedOption = options[Math.floor(Math.random() * options.length)];
+        selectedOption();
+    }
     return [num1, num2, result];
 }
 
