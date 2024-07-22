@@ -43,7 +43,12 @@ function resetGame() {
 }
 
 function generateQuestion(difficulty) {
-    if (errors >= maxErrors) {
+    if (!isChallengeMode && questionCount >= 10) {
+        endGame();
+        return;
+    }
+
+    if (isChallengeMode && errors >= maxErrors) {
         endGame();
         return;
     }
@@ -232,7 +237,9 @@ function checkAnswer() {
         setTimeout(() => generateQuestion(isChallengeMode ? 'Challenge Mode' : document.getElementById('difficultyTitle').innerText.split(': ')[1].trim()), 500);
     } else {
         document.getElementById('feedback').innerText = '';
-        handleWrongAnswer();
+        if (isChallengeMode) {
+            handleWrongAnswer();
+        }
     }
 
     document.getElementById('score').innerText = 'Score: ' + currentScore;
