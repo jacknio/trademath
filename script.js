@@ -86,7 +86,7 @@ function generateQuestion(difficulty) {
     document.getElementById('question').innerText = question + ' = ?';
     document.getElementById('userAnswer').value = '';
     document.getElementById('userAnswer').focus();
-    document.getElementById('userAnswer').addEventListener('input', checkAnswer);
+    document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
 
     if (isChallengeMode) {
         startTimer();
@@ -220,29 +220,30 @@ function startTimer() {
     }, 1000);
 }
 
-function checkAnswer() {
-    const userAnswer = parseFloat(document.getElementById('userAnswer').value);
-    const correctAnswer = parseFloat(currentQuestion.answer);
+function checkAnswerChallengeMode() {
+    const userAnswer = document.getElementById('userAnswer').value;
+    const correctAnswer = currentQuestion.answer.toString();
 
-    if (userAnswer === correctAnswer) {
-        currentScore++;
-        document.getElementById('feedback').innerText = 'Correct!';
-        const endTime = new Date();
-        questionTimes.push({
-            question: currentQuestion.question,
-            time: (endTime - currentQuestion.startTime) / 1000
-        });
+    // 只有当用户输入的答案长度和正确答案长度相同时才进行比较
+    if (userAnswer.length === correctAnswer.length) {
+        if (parseFloat(userAnswer) === parseFloat(correctAnswer)) {
+            currentScore++;
+            document.getElementById('feedback').innerText = 'Correct!';
+            const endTime = new Date();
+            questionTimes.push({
+                question: currentQuestion.question,
+                time: (endTime - currentQuestion.startTime) / 1000
+            });
 
-        clearTimeout(timer);
-        setTimeout(() => generateQuestion(isChallengeMode ? 'Challenge Mode' : document.getElementById('difficultyTitle').innerText.split(': ')[1].trim()), 500);
-    } else {
-        document.getElementById('feedback').innerText = '';
-        if (isChallengeMode) {
+            clearTimeout(timer);
+            setTimeout(() => generateQuestion('Challenge Mode'), 500);
+        } else {
+            document.getElementById('feedback').innerText = 'Wrong!';
             handleWrongAnswer();
         }
-    }
 
-    document.getElementById('score').innerText = 'Score: ' + currentScore;
+        document.getElementById('score').innerText = 'Score: ' + currentScore;
+    }
 }
 
 function handleWrongAnswer() {
