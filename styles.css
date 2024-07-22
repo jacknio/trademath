@@ -24,7 +24,7 @@ p {
     margin-top: 20px;
 }
 
-.difficulty-button, .submit-button {
+.difficulty-button, .submit-button, .restart-button {
     margin: 10px;
     padding: 15px 30px;
     font-size: 16px;
@@ -36,7 +36,7 @@ p {
     transition: background-color 0.3s ease;
 }
 
-.difficulty-button:hover, .submit-button:hover {
+.difficulty-button:hover, .submit-button:hover, .restart-button:hover {
     background-color: #004d40;
 }
 
@@ -65,4 +65,28 @@ p {
     margin-top: 20px;
     font-size: 1.5em;
     color: #004d40;
+}
+
+.timer {
+    font-size: 1.5em;
+    color: #ff5722;
+    margin-top: 20px;
+}
+
+.leaderboard {
+    margin-top: 30px;
+}
+
+.leaderboard h2 {
+    color: #00796b;
+}
+
+.leaderboard ol {
+    text-align: left;
+    display: inline-block;
+}
+
+.restart-button {
+    display: block;
+    margin: 20px auto;
 }
