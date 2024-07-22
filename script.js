@@ -10,6 +10,11 @@ let isChallengeMode = false;
 let timeLimit = 10; // 每道题10秒
 let maxQuestions = 999; // Challenge Mode 的上限
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    // 设置事件监听器
+    document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
+});
+
 function startGame(difficulty) {
     resetGame();
     document.getElementById('difficultyTitle').innerText = 'Difficulty: ' + difficulty;
@@ -92,8 +97,6 @@ function generateQuestion(difficulty) {
     document.getElementById('question').innerText = question + ' = ?';
     document.getElementById('userAnswer').value = '';
     document.getElementById('userAnswer').focus();
-    document.getElementById('userAnswer').removeEventListener('input', checkAnswerChallengeMode);
-    document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
 
     if (isChallengeMode) {
         startTimer();
@@ -252,23 +255,20 @@ function checkAnswerChallengeMode() {
     const userAnswer = document.getElementById('userAnswer').value;
     const correctAnswer = currentQuestion.answer.toString();
 
-    // 只有当用户输入的答案长度和正确答案长度相同时才进行比较
-    if (userAnswer.length === correctAnswer.length) {
-        if (parseFloat(userAnswer) === parseFloat(correctAnswer)) {
-            currentScore++;
-            document.getElementById('feedback').innerText = 'Correct!';
-            const endTime = new Date();
-            questionTimes.push({
-                question: currentQuestion.question,
-                time: (endTime - currentQuestion.startTime) / 1000
-            });
+    if (parseFloat(userAnswer) === parseFloat(correctAnswer)) {
+        currentScore++;
+        document.getElementById('feedback').innerText = 'Correct!';
+        const endTime = new Date();
+        questionTimes.push({
+            question: currentQuestion.question,
+            time: (endTime - currentQuestion.startTime) / 1000
+        });
 
-            clearInterval(timer);
-            setTimeout(() => generateQuestion('Challenge Mode'), 500);
+        clearInterval(timer);
+        setTimeout(() => generateQuestion('Challenge Mode'), 500);
 
-            document.getElementById('score').innerText = 'Score: ' + currentScore;
-            document.getElementById('userAnswer').value = ''; // 清空输入框
-        }
+        document.getElementById('score').innerText = 'Score: ' + currentScore;
+        document.getElementById('userAnswer').value = ''; // 清空输入框
     }
 }
 
