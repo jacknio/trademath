@@ -86,10 +86,12 @@ function generateQuestion(difficulty) {
     document.getElementById('question').innerText = question + ' = ?';
     document.getElementById('userAnswer').value = '';
     document.getElementById('userAnswer').focus();
-    document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
-
+    document.getElementById('userAnswer').removeEventListener('input', checkAnswer);
     if (isChallengeMode) {
+        document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
         startTimer();
+    } else {
+        document.getElementById('userAnswer').addEventListener('input', checkAnswer);
     }
 
     questionCount++;
