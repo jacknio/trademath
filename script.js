@@ -8,6 +8,7 @@ let maxErrors = 3;
 let timer;
 let isChallengeMode = false;
 let timeLimit = 10; // 每道题10秒
+let maxQuestions = 999; // Challenge Mode 的上限
 
 function startGame(difficulty) {
     resetGame();
@@ -53,6 +54,11 @@ function generateQuestion(difficulty) {
         return;
     }
 
+    if (isChallengeMode && questionCount >= maxQuestions) {
+        endGame();
+        return;
+    }
+
     let num1, num2, result, operation, question;
     if (difficulty === 'Challenge Mode') {
         if (questionCount < 3) {
@@ -86,12 +92,11 @@ function generateQuestion(difficulty) {
     document.getElementById('question').innerText = question + ' = ?';
     document.getElementById('userAnswer').value = '';
     document.getElementById('userAnswer').focus();
-    document.getElementById('userAnswer').removeEventListener('input', checkAnswer);
+    document.getElementById('userAnswer').removeEventListener('input', checkAnswerChallengeMode);
+    document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
+
     if (isChallengeMode) {
-        document.getElementById('userAnswer').addEventListener('input', checkAnswerChallengeMode);
         startTimer();
-    } else {
-        document.getElementById('userAnswer').addEventListener('input', checkAnswer);
     }
 
     questionCount++;
@@ -137,13 +142,13 @@ function generateHardQuestion() {
     } else {
         operation = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
         if (operation === '+') {
-            [num1, num2, result] = generateAddition(900, 100, true);
+            [num1, num2, result] = generateHardAddition();
         } else if (operation === '-') {
-            [num1, num2, result] = generateSubtraction(900, 100, true);
+            [num1, num2, result] = generateHardSubtraction();
         } else if (operation === '*') {
             [num1, num2, result] = generateMultiplication(90, 90, true);
         } else {
-            [num1, num2, result] = generateHardDivision(90, 3, true);
+            [num1, num2, result] = generateHardDivision();
         }
     }
     return [num1, num2, result, operation];
@@ -182,11 +187,32 @@ function generateAddition(maxNum1, maxNum2, isHard = false) {
     return [num1, num2, result];
 }
 
+function generateHardAddition() {
+    let num1, num2, result;
+    do {
+        num1 = Math.floor(Math.random() * 900) + 100; // 确保是三位数
+        num2 = Math.floor(Math.random() * 900) + 100; // 确保是三位数
+        result = num1 + num2;
+    } while (num2 % 100 === 0); // 避免整数的加法
+    return [num1, num2, result];
+}
+
 function generateSubtraction(maxNum1, maxNum2, isHard = false) {
     let num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 100)) + 100 : Math.floor(Math.random() * maxNum1);
     let num2 = isHard ? Math.floor(Math.random() * (maxNum2 - 100)) + 100 : Math.floor(Math.random() * maxNum2);
     if (num1 < num2) [num1, num2] = [num2, num1]; // 保证结果为正数
     let result = num1 - num2;
+    return [num1, num2, result];
+}
+
+function generateHardSubtraction() {
+    let num1, num2, result;
+    do {
+        num1 = Math.floor(Math.random() * 900) + 100; // 确保是三位数
+        num2 = Math.floor(Math.random() * 900) + 100; // 确保是三位数
+        if (num1 < num2) [num1, num2] = [num2, num1]; // 保证结果为正数
+        result = num1 - num2;
+    } while (num2 % 100 === 0); // 避免整数的减法
     return [num1, num2, result];
 }
 
@@ -197,14 +223,14 @@ function generateMultiplication(maxNum1, maxNum2, isHard = false) {
     return [num1, num2, result];
 }
 
-function generateHardDivision(maxNum1, minNum2, isHard = false) {
+function generateHardDivision() {
     let num1, num2, result;
     do {
-        num1 = isHard ? Math.floor(Math.random() * (maxNum1 - 10)) + 10 : Math.floor(Math.random() * maxNum1) + 1;
-        num2 = isHard ? Math.floor(Math.random() * (maxNum1 - minNum2)) + minNum2 : Math.floor(Math.random() * maxNum2) + 1;
+        num1 = Math.floor(Math.random() * 900) + 100; // 确保是三位数以上
+        num2 = Math.floor(Math.random() * 90) + 10; // 确保是两位数以上
         result = num1 / num2;
-    } while (!Number.isInteger(result) || (num2 === 10 && num1 % 10 === 0)); // 确保小数点后三位以内且不为十的倍数除以10
-    return [num1, num2, result.toFixed(3)];
+    } while (!Number.isInteger(result) || num2 <= 10); // 确保不为一位数的除法
+    return [num1, num2, result];
 }
 
 function startTimer() {
@@ -237,14 +263,12 @@ function checkAnswerChallengeMode() {
                 time: (endTime - currentQuestion.startTime) / 1000
             });
 
-            clearTimeout(timer);
+            clearInterval(timer);
             setTimeout(() => generateQuestion('Challenge Mode'), 500);
-        } else {
-            document.getElementById('feedback').innerText = 'Wrong!';
-            handleWrongAnswer();
-        }
 
-        document.getElementById('score').innerText = 'Score: ' + currentScore;
+            document.getElementById('score').innerText = 'Score: ' + currentScore;
+            document.getElementById('userAnswer').value = ''; // 清空输入框
+        }
     }
 }
 
