@@ -16,17 +16,7 @@
             <button onclick="startGame('hard')" class="difficulty-button">Hard</button>
             <button onclick="startChallengeMode()" class="difficulty-button">Challenge Mode</button>
         </div>
-        
-        <div class="challenge-explanation">
-            <h2>Challenge Mode</h2>
-            <p>
-                In Challenge Mode, you will face an unlimited number of questions with increasing difficulty.
-                You have a limited time to answer each question. The game ends when you get three questions wrong. 
-                Try to score as high as possible!
-            </p>
-        </div>
 
-        <!-- 新增计算练习视图，最初隐藏 -->
         <div id="gameView" class="game-view" style="display:none;">
             <h2 id="difficultyTitle"></h2>
             <div id="question" class="question"></div>
@@ -37,14 +27,12 @@
             <div id="timer" class="timer"></div>
         </div>
 
-        <!-- 新增榜单视图，最初隐藏 -->
         <div id="leaderboard" class="leaderboard" style="display:none;">
             <h2>Leaderboard</h2>
             <ol id="leaderboardList"></ol>
             <button onclick="restartGame()" class="restart-button">Start Over</button>
         </div>
         
-        <!-- 新增反馈邮箱信息 -->
         <footer>
             <p>Any feedback? Please email to <a href="mailto:tradermathschool@hotmail.com">tradermathschool@hotmail.com</a></p>
         </footer>
